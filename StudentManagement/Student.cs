@@ -20,6 +20,18 @@ namespace StudentManagement
             InitializeComponent();
         }
 
+
+        void refresh()
+        {
+            datagrvStudent.DataSource = GetStudent().Tables[0];
+            datagrvStudent.Refresh();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            refresh();
+        }
+
         private void Student_Load(object sender, EventArgs e)
         {
             btnDelete.Enabled = false;
@@ -30,13 +42,6 @@ namespace StudentManagement
             datagrvStudent.DataSource = GetStudent().Tables[0];
             // datagrvStudent.DataMember = "Students";
         }
-
-        void refresh()
-        {
-            datagrvStudent.DataSource = GetStudent().Tables[0];
-            datagrvStudent.Refresh();
-        }
-
 
         DataSet GetStudent(string search = "")
         {
@@ -168,11 +173,6 @@ namespace StudentManagement
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
-        private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            refresh();
-        }
-
         private void datagrvStudent_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -188,6 +188,12 @@ namespace StudentManagement
                 btnDelete.Enabled = true;
                 btnEdit.Enabled = true;
             }
+        }
+
+        private void btnDepartmentView_Click(object sender, EventArgs e)
+        {
+            Department department = new Department();
+            department.Show();
         }
     }
 }

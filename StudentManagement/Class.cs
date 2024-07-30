@@ -29,6 +29,16 @@ namespace StudentManagement
             datagrvClass.Refresh();
         }
 
+        private void Class_Load(object sender, EventArgs e)
+        {
+            datagrvClass.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            datagrvClass.DataSource = GetClass().Tables[0];
+
+            btnDeleteClass.Enabled = false;
+            btnEditClass.Enabled = false;
+        }
+
         DataSet GetClass(string search = "")
         {
             DataSet data = new DataSet();
@@ -68,17 +78,6 @@ namespace StudentManagement
             datagrvClass.Refresh();
         }
 
-        private void Class_Load(object sender, EventArgs e)
-        {
-            //Fill bảng vừa form
-            datagrvClass.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-            datagrvClass.DataSource = GetClass().Tables[0];
-
-            btnDeleteClass.Enabled = false;
-            btnEditClass.Enabled = false;
-        }
-
         private void btnExit_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -89,18 +88,6 @@ namespace StudentManagement
             Course course = new Course();
             course.StartPosition = FormStartPosition.Manual;
             course.Show();
-        }
-
-        private void datagrvEnroll_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                DataGridViewRow rowData = datagrvClass.Rows[e.RowIndex];
-                txtClassID.Text = rowData.Cells["class_id"].Value.ToString();
-                txtCourseID.Text = rowData.Cells["course_id"].Value.ToString();
-                btnEditClass.Enabled = true;
-                btnDeleteClass.Enabled = true;
-            }
         }
 
         private void btnAddClass_Click(object sender, EventArgs e)

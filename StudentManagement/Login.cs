@@ -27,16 +27,9 @@ namespace StudentManagement
             }
         }
 
- 
-
         private void btnLogin_Click(object sender, EventArgs e)
         {
             loginRequest();
-        }
-
-        private void Login_KeyDown(object sender, KeyEventArgs e)
-        {
-
         }
 
         private void loginRequest()
@@ -60,7 +53,7 @@ namespace StudentManagement
                         string role = reader["role"].ToString();
                         Main main = new Main();
                         this.Hide();
-                        main.GetRoll(role);
+                        main.GetRole(role);
                         main.ShowDialog();
                         this.Close();
                     }
@@ -75,18 +68,6 @@ namespace StudentManagement
             {
                 MessageBox.Show(ex.Message);
             }
-        }
-
-
-
-        private void Login_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Login_Load_1(object sender, EventArgs e)
-        {
-
         }
     }
 }

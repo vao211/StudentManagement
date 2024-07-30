@@ -17,6 +17,17 @@ namespace StudentManagement
         {
             InitializeComponent();
         }
+
+        private void Enroll_Load(object sender, EventArgs e)
+        {
+            btnDeleteStu.Enabled = false;
+            btnEditStu.Enabled = false;
+            //Fill bảng vừa form
+            datagrvEnroll.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            datagrvEnroll.DataSource = GetEnroll().Tables[0];
+        }
+
         DataSet GetEnroll(string search = "")
         {
             DataSet data = new DataSet();
@@ -58,20 +69,15 @@ namespace StudentManagement
             datagrvEnroll.Refresh();
         }
 
-        private void Enroll_Load(object sender, EventArgs e)
-        {
-            btnDeleteStu.Enabled = false;
-            btnEditStu.Enabled = false;
-            //Fill bảng vừa form
-            datagrvEnroll.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-            datagrvEnroll.DataSource = GetEnroll().Tables[0];
-        }
-
         void refresh()
         {
             datagrvEnroll.DataSource = GetEnroll().Tables[0];
             datagrvEnroll.Refresh();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            refresh();
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -154,11 +160,6 @@ namespace StudentManagement
                 }
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
-        }
-
-        private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            refresh();
         }
 
         private void datagrvEnroll_CellClick(object sender, DataGridViewCellEventArgs e)
