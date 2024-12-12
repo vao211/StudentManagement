@@ -9,6 +9,6 @@ namespace StudentManagement
 {
     internal class Connection
     {
-        public static string connectionString = @"Data Source=NGAIVINH;Initial Catalog=StudentManage;Integrated Security=True;";
+        public static string connectionString = @"Data Source=NGAIVINH\SQLEXPRESS;Initial Catalog=StudentManage;Integrated Security=True";
     }
 }

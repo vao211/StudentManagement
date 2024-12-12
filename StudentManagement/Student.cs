@@ -20,18 +20,6 @@ namespace StudentManagement
             InitializeComponent();
         }
 
-
-        void refresh()
-        {
-            datagrvStudent.DataSource = GetStudent().Tables[0];
-            datagrvStudent.Refresh();
-        }
-
-        private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            refresh();
-        }
-
         private void Student_Load(object sender, EventArgs e)
         {
             btnDelete.Enabled = false;
@@ -43,6 +31,13 @@ namespace StudentManagement
             // datagrvStudent.DataMember = "Students";
         }
 
+        void refresh()
+        {
+            datagrvStudent.DataSource = GetStudent().Tables[0];
+            datagrvStudent.Refresh();
+        }
+
+
         DataSet GetStudent(string search = "")
         {
             DataSet data = new DataSet();
@@ -51,11 +46,11 @@ namespace StudentManagement
 
             if (!string.IsNullOrEmpty(search) && int.TryParse(search, out id))
             {
-                query += " Where student_id = @id or department_id = @DepID or program_id = @ProID";
+                query += " Where student_id = @id";
             }
             else if (!string.IsNullOrEmpty(search) && !int.TryParse(search, out _))
             {
-                query += " WHERE first_name LIKE @FName +'%' OR last_name LIKE @LName +'%' OR department_name LIKE @DepName +'%'";
+                query += " WHERE first_name LIKE @FName+'%' OR last_name LIKE @LName +'%'";
             }
            
             using (SqlConnection connection = new SqlConnection(Connection.connectionString))
@@ -65,9 +60,6 @@ namespace StudentManagement
             cmd.Parameters.AddWithValue("@id", id);
             cmd.Parameters.AddWithValue("@FName", txtSearch.Text.Trim());
             cmd.Parameters.AddWithValue("@LName", txtSearch.Text.Trim());
-            cmd.Parameters.AddWithValue("@DepName", txtSearch.Text.Trim());
-            cmd.Parameters.AddWithValue("@DepID", txtSearch.Text.Trim());
-            cmd.Parameters.AddWithValue("@ProID", txtSearch.Text.Trim());
             SqlDataAdapter sqlAdapter = new SqlDataAdapter(cmd);
             sqlAdapter.Fill(data);
             connection.Close();
@@ -98,21 +90,16 @@ namespace StudentManagement
                 using (SqlConnection connection = new SqlConnection(Connection.connectionString))
                 {
                     connection.Open();
-                    string addQry = "insert into Students values (@Id,@FName,@LName,@DepartmentID,@DepartmentName,@ProgramID)";
+                    string addQry = "insert into Students values (@Id,@FName,@LName,@DepartmentID,@ProgramID)";
                     SqlCommand cmd = new SqlCommand(addQry, connection);
                     cmd.Parameters.AddWithValue("@Id", int.Parse(txtStuID.Text.Trim()));
                     cmd.Parameters.AddWithValue("@FName", txtFName.Text.Trim());
                     cmd.Parameters.AddWithValue("@LName", txtLName.Text.Trim());
                     cmd.Parameters.AddWithValue("@DepartmentID", int.Parse(txtDepartmentID.Text.Trim()));
-                    cmd.Parameters.AddWithValue("@DepartmentName", DBNull.Value);
                     cmd.Parameters.AddWithValue("@ProgramID", int.Parse(txtProgramID.Text.Trim()));
                     cmd.ExecuteNonQuery();
                     refresh();
                 }
-            }
-            catch (System.FormatException)
-            { 
-
             }
             catch (SqlException ex)
             {
@@ -122,8 +109,7 @@ namespace StudentManagement
                 }
                 else if (ex.Number == 547) // Lỗi khóa ngoại không tồn tại
                 {
-                   MessageBox.Show("ID not exist!");
-                  // MessageBox.Show(ex.Message.ToString());
+                    MessageBox.Show("ID not exist!");
                 }
             }
             catch (Exception ex)
@@ -140,19 +126,17 @@ namespace StudentManagement
                 {
                     connection.Open();
                     string addQry = "UPDATE Students \n SET student_id = @Id, first_name = @FName, last_name = @LName," +
-                        " department_id = @DepartmentID, department_name = @DepartmentName, program_id = @ProgramID \n WHERE student_id = @Id";
+                        " department_id = @DepartmentID, program_id = @ProgramID \n WHERE student_id = @Id";
                     SqlCommand cmd = new SqlCommand(addQry, connection);
                     cmd.Parameters.AddWithValue("@Id", int.Parse(txtStuID.Text.Trim()));
                     cmd.Parameters.AddWithValue("@FName", txtFName.Text.Trim());
                     cmd.Parameters.AddWithValue("@LName", txtLName.Text.Trim());
                     cmd.Parameters.AddWithValue("@DepartmentID", int.Parse(txtDepartmentID.Text.Trim()));
-                    cmd.Parameters.AddWithValue("@DepartmentName", DBNull.Value);
                     cmd.Parameters.AddWithValue("@ProgramID", int.Parse(txtProgramID.Text.Trim()));
                     cmd.ExecuteNonQuery();
                     refresh();
                 }
             }
-            catch (System.FormatException) { }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
@@ -173,6 +157,11 @@ namespace StudentManagement
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            refresh();
+        }
+
         private void datagrvStudent_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -188,12 +177,6 @@ namespace StudentManagement
                 btnDelete.Enabled = true;
                 btnEdit.Enabled = true;
             }
-        }
-
-        private void btnDepartmentView_Click(object sender, EventArgs e)
-        {
-            Department department = new Department();
-            department.Show();
         }
     }
 }

@@ -75,7 +75,7 @@
             this.btnEnroll.TabIndex = 2;
             this.btnEnroll.Text = "Enrollment";
             this.btnEnroll.UseVisualStyleBackColor = false;
-            this.btnEnroll.Click += new System.EventHandler(this.btnEnroll_Click);
+            this.btnEnroll.Click += new System.EventHandler(this.btnClassList_Click);
             // 
             // btnClassList
             // 
@@ -87,7 +87,7 @@
             this.btnClassList.TabIndex = 3;
             this.btnClassList.Text = "Class list";
             this.btnClassList.UseVisualStyleBackColor = false;
-            this.btnClassList.Click += new System.EventHandler(this.btnClassList_Click);
+            this.btnClassList.Click += new System.EventHandler(this.btnClassList_Click_1);
             // 
             // btnCourseList
             // 
@@ -169,6 +169,7 @@
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Main Menu";
+            this.Load += new System.EventHandler(this.Main_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -27,13 +27,21 @@ namespace StudentManagement
             }
         }
 
+ 
+
         private void btnLogin_Click(object sender, EventArgs e)
         {
             loginRequest();
         }
 
+        private void Login_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
         private void loginRequest()
         {
+            DataSet data = new DataSet();
             string username = txtUser.Text.Trim();
             string password = txtPass.Text.Trim();
             //sqlConnection
@@ -50,10 +58,10 @@ namespace StudentManagement
                     SqlDataReader reader = cmd.ExecuteReader();
                     if (reader.Read())
                     {
-                        string role = reader["role"].ToString();
+                        string roll = reader["role"].ToString();
                         Main main = new Main();
                         this.Hide();
-                        main.GetRole(role);
+                        main.GetRoll(roll);
                         main.ShowDialog();
                         this.Close();
                     }
@@ -68,6 +76,18 @@ namespace StudentManagement
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+
+
+        private void Login_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Login_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

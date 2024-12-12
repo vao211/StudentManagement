@@ -18,14 +18,6 @@ namespace StudentManagement
             InitializeComponent();
         }
 
-        private void Course_Load(object sender, EventArgs e)
-        {
-            //Fill bảng vừa form
-            datagrvCourse.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-            datagrvCourse.DataSource = GetCourse().Tables[0];
-        }
-
         DataSet GetCourse(string search = "")
         {
             DataSet data = new DataSet();
@@ -57,11 +49,20 @@ namespace StudentManagement
             return data;
         }
 
+
         private void btnSearch_Click(object sender, EventArgs e)
         {
             string search = txtSearch.Text.Trim();
             datagrvCourse.DataSource = GetCourse(search).Tables[0];
             datagrvCourse.Refresh();
+        }
+
+        private void Course_Load(object sender, EventArgs e)
+        {
+            //Fill bảng vừa form
+            datagrvCourse.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            datagrvCourse.DataSource = GetCourse().Tables[0];
         }
 
         void refresh()
@@ -138,6 +139,7 @@ namespace StudentManagement
                 }
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
+
         }
 
         private void btnDeleteCourse_Click(object sender, EventArgs e)

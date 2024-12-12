@@ -29,16 +29,6 @@ namespace StudentManagement
             datagrvClass.Refresh();
         }
 
-        private void Class_Load(object sender, EventArgs e)
-        {
-            datagrvClass.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-            datagrvClass.DataSource = GetClass().Tables[0];
-
-            btnDeleteClass.Enabled = false;
-            btnEditClass.Enabled = false;
-        }
-
         DataSet GetClass(string search = "")
         {
             DataSet data = new DataSet();
@@ -51,7 +41,7 @@ namespace StudentManagement
             }
             else if (!string.IsNullOrEmpty(search) && !int.TryParse(search, out _))
             {
-                query += " WHERE class_name LIKE @ClassName+'%' or course_name LIKE @CourseName +'%'";
+                query += " WHERE class_name LIKE @ClassName+'%'";
             }
             //sqlConnection
             using (SqlConnection connection = new SqlConnection(Connection.connectionString))
@@ -62,8 +52,7 @@ namespace StudentManagement
                 cmd.Parameters.AddWithValue("@ClassID", id);
                 cmd.Parameters.AddWithValue("@CourseID", id);
                 cmd.Parameters.AddWithValue("@ClassName", txtSearch.Text.Trim());
-                cmd.Parameters.AddWithValue("@CourseName", txtSearch.Text.Trim());
-                //sqlDataAdapter
+                //sqlDataAdepter
                 SqlDataAdapter sqlAdapter = new SqlDataAdapter(cmd);
                 sqlAdapter.Fill(data);
                 connection.Close();
@@ -78,6 +67,17 @@ namespace StudentManagement
             datagrvClass.Refresh();
         }
 
+        private void Class_Load(object sender, EventArgs e)
+        {
+            //Fill bảng vừa form
+            datagrvClass.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            datagrvClass.DataSource = GetClass().Tables[0];
+
+            btnDeleteClass.Enabled = false;
+            btnEditClass.Enabled = false;
+        }
+
         private void btnExit_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -90,6 +90,18 @@ namespace StudentManagement
             course.Show();
         }
 
+        private void datagrvEnroll_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow rowData = datagrvClass.Rows[e.RowIndex];
+                txtClassID.Text = rowData.Cells["class_id"].Value.ToString();
+                txtCourseID.Text = rowData.Cells["course_id"].Value.ToString();
+                btnEditClass.Enabled = true;
+                btnDeleteClass.Enabled = true;
+            }
+        }
+
         private void btnAddClass_Click(object sender, EventArgs e)
         {
             try
@@ -97,12 +109,11 @@ namespace StudentManagement
                 using (SqlConnection connection = new SqlConnection(Connection.connectionString))
                 {
                     connection.Open();
-                    string addQry = "insert into Classes values (@ClassID,@ClassName,@CourseID,@CourseName)";
+                    string addQry = "insert into Classes values (@ClassID,@CourseID,@ClassName)";
                     SqlCommand cmd = new SqlCommand(addQry, connection);
                     cmd.Parameters.AddWithValue("@ClassID", int.Parse(txtClassID.Text.Trim()));
-                    cmd.Parameters.AddWithValue("@ClassName", txtClassName.Text.Trim());
                     cmd.Parameters.AddWithValue("@CourseID", int.Parse(txtCourseID.Text.Trim()));
-                    cmd.Parameters.AddWithValue("@CourseName", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ClassName", txtClassName.Text.Trim());
                     cmd.ExecuteNonQuery();
                     refresh();
                 }
@@ -131,12 +142,11 @@ namespace StudentManagement
                 using (SqlConnection connection = new SqlConnection(Connection.connectionString))
                 {
                     connection.Open();
-                    string addQry = "UPDATE Classes \n SET class_id = @ClassID, class_name = @ClassName, course_id = @CourseID, course_name = @CourseName WHERE class_id = @ClassID";
+                    string addQry = "UPDATE Classes \n SET class_id = @ClassID, course_id = @CourseID, class_name = @ClassName WHERE class_id = @ClassID";
                     SqlCommand cmd = new SqlCommand(addQry, connection);
                     cmd.Parameters.AddWithValue("@ClassID", int.Parse(txtClassID.Text.Trim()));
-                    cmd.Parameters.AddWithValue("@ClassName", txtClassName.Text.Trim());
                     cmd.Parameters.AddWithValue("@CourseID", int.Parse(txtCourseID.Text.Trim()));
-                    cmd.Parameters.AddWithValue("@CourseName", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ClassName", txtClassName.Text.Trim());
                     cmd.ExecuteNonQuery();
                     refresh();
                 }
@@ -175,6 +185,7 @@ namespace StudentManagement
                 btnDeleteClass.Enabled = true;
             }
         }
+
 
     }
 }

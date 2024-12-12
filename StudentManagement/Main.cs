@@ -17,14 +17,15 @@ namespace StudentManagement
         {
             InitializeComponent();
         }
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
 
-        public void GetRole(string _roll)
+        public void GetRoll(string _roll)
         {
             lblHello.Text = "Hello!"+_roll;
+        }
+
+        private void Main_Load(object sender, EventArgs e)
+        {
+
         }
 
         private void btnStuList_Click(object sender, EventArgs e)
@@ -36,7 +37,12 @@ namespace StudentManagement
             this.Show();
         }
 
-        private void btnEnroll_Click(object sender, EventArgs e)
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void btnClassList_Click(object sender, EventArgs e)
         {
             Enroll enroll = new Enroll();
             this.Hide();
@@ -45,7 +51,7 @@ namespace StudentManagement
             this.Show();
         }
 
-        private void btnClassList_Click(object sender, EventArgs e)
+        private void btnClassList_Click_1(object sender, EventArgs e)
         {
             Class classs = new Class();
             this.Hide();
